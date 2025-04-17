@@ -7,6 +7,18 @@
       "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\rental.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\customers.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\customers.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\equipment.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\equipment.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\data\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\data\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,14 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\data\\rental.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\data\\rental.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\equipment.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\equipment.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\data\\equipment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,20 +58,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
+              "Title": "Customers.razor",
+              "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Customers.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Customers.razor",
+              "ToolTip": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Customers.razor",
+              "RelativeToolTip": "Components\\Pages\\Customers.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-17T22:19:36.593Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Customer.cs",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Customer.cs",
               "RelativeDocumentMoniker": "Components\\Pages\\Data\\Customer.cs",
               "ToolTip": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Customer.cs",
               "RelativeToolTip": "Components\\Pages\\Data\\Customer.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAmwBUAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAgwBUAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-17T18:52:15.133Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "Equipment.razor",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Equipment.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Equipment.razor",
@@ -80,7 +97,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "Rental.cs",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Rental.cs",
               "RelativeDocumentMoniker": "Components\\Pages\\Data\\Rental.cs",
@@ -88,12 +105,11 @@
               "RelativeToolTip": "Components\\Pages\\Data\\Rental.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:50:05.003Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T17:50:05.003Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Equipment.cs",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Equipment.cs",
               "RelativeDocumentMoniker": "Components\\Pages\\Data\\Equipment.cs",
@@ -101,18 +117,17 @@
               "RelativeToolTip": "Components\\Pages\\Data\\Equipment.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:49:34.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T17:49:34.205Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Components\\Layout\\NavMenu.razor",
               "ToolTip": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Layout\\NavMenu.razor",
               "RelativeToolTip": "Components\\Layout\\NavMenu.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-17T17:30:05.251Z",
               "EditorCaption": ""
@@ -125,14 +140,14 @@
               "RelativeDocumentMoniker": "Components\\Pages\\Rental.razor",
               "ToolTip": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Rental.razor",
               "RelativeToolTip": "Components\\Pages\\Rental.razor",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAhwFUAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAGIAAAAAAAAAAAASwIQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-17T17:27:40.748Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Home.razor",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
@@ -140,8 +155,7 @@
               "RelativeToolTip": "Components\\Pages\\Home.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-11T19:32:38.168Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-11T19:32:38.168Z"
             }
           ]
         }
