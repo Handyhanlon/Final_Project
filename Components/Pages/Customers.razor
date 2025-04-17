@@ -1,0 +1,268 @@
+﻿@page "/customers"
+@using System.ComponentModel.DataAnnotations
+@using Final_Project.Components.Pages.Data;
+
+<h1>Customer Form</h1>
+<style>
+    /* Your existing CSS remains unchanged */
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 380px;
+        font-family: Arial, sans-serif;
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    label {
+        width: 100px;
+        font-weight: 500;
+        font-size: 14px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="number"],
+    select {
+        width: 220px;
+        padding: 8px 14px;
+        border: 1px solid #ccc;
+        border-radius: 999px;
+        font-size: 14px;
+        color: #333;
+        outline: none;
+        transition: border-color 0.2s;
+        background-color: #fff;
+    }
+
+        input:focus,
+        select:focus {
+            border-color: #7a9af7;
+        }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+    }
+
+        .button-group button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 999px;
+            background-color: #4a90e2;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+            .button-group button:hover {
+                background-color: #3b78c2;
+            }
+
+    table.customer-table {
+        margin-top: 20px;
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+    }
+
+    .customer-table th,
+    .customer-table td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        text-align: center;
+    }
+
+    .customer-table th {
+        background-color: #f0f0f0;
+    }
+
+    .action-buttons button {
+        margin: 0 4px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .action-buttons .ban {
+        background-color: #e67e22;
+    }
+
+    .action-buttons .delete {
+        background-color: #e74c3c;
+    }
+
+    .action-buttons .discount {
+        background-color: #27ae60;
+    }
+
+    .action-buttons button:hover {
+        opacity: 0.85;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-group">
+        <label>Customer ID:</label>
+        <input type="number" @bind="currentCustomerData.Id" readonly />
+    </div>
+    <div class="form-group">
+        <label>First Name:</label>
+        <input type="text" @bind="currentCustomerData.FirstName" />
+    </div>
+    <div class="form-group">
+        <label>Last Name:</label>
+        <input type="text" @bind="currentCustomerData.LastName" />
+    </div>
+    <div class="form-group">
+        <label>Phone:</label>
+        <input type="tel" @bind="currentCustomerData.Phone" />
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" @bind="currentCustomerData.Email" />
+    </div>
+
+    <div class="button-group">
+        <button @onclick="AddCustomer">Add Customer</button>
+        <button @onclick="UpdateCustomer">Update Customer</button>
+        <button @onclick="ClearFields">Clear Fields</button>
+    </div>
+</div>
+
+<table class="customer-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in customerRecords)
+        {
+            <tr>
+                <td>@person.Id</td>
+                <td>@person.FirstName</td>
+                <td>@person.LastName</td>
+                <td>@person.Phone</td>
+                <td>@person.Email</td>
+                <td class="action-buttons">
+                    <button class="ban" @onclick="() => BanCustomer(person.Id)">Ban</button>
+                    <button class="delete" @onclick="() => DeleteCustomer(person.Id)">Delete</button>
+                    <button class="discount" @onclick="() => DiscountCustomer(person.Id)">Discount</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    // Customer class definition
+    public class CustomerRecord
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "First name is required")]
+        public string FirstName { get; set; } = "";
+
+        [Required(ErrorMessage = "Last name is required")]
+        public string LastName { get; set; } = "";
+
+        [Phone(ErrorMessage = "Invalid phone number")]
+        public string Phone { get; set; } = "";
+
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string Email { get; set; } = "";
+    }
+
+    // Instance variables with distinct names
+    private CustomerRecord currentCustomerData = new();
+    private List<CustomerRecord> customerRecords = new()
+    {
+        new CustomerRecord { Id = 10001, FirstName = "John", LastName = "Doe", Phone = "1234567890", Email = "john@example.com" },
+        new CustomerRecord { Id = 10002, FirstName = "Jane", LastName = "Smith", Phone = "9876543210", Email = "jane@example.com" }
+    };
+
+    protected override void OnInitialized()
+    {
+        GenerateRandomId();
+    }
+
+    private void GenerateRandomId()
+    {
+        var random = new Random();
+        currentCustomerData.Id = random.Next(10000, 99999);
+
+        while (customerRecords.Any(c => c.Id == currentCustomerData.Id))
+        {
+            currentCustomerData.Id = random.Next(10000, 99999);
+        }
+    }
+
+    private void AddCustomer()
+    {
+        if (!string.IsNullOrWhiteSpace(currentCustomerData.FirstName) &&
+            !string.IsNullOrWhiteSpace(currentCustomerData.LastName))
+        {
+            customerRecords.Add(currentCustomerData);
+            currentCustomerData = new CustomerRecord();
+            GenerateRandomId();
+        }
+    }
+
+    private void UpdateCustomer()
+    {
+        var existingCustomer = customerRecords.FirstOrDefault(c => c.Id == currentCustomerData.Id);
+        if (existingCustomer != null)
+        {
+            existingCustomer.FirstName = currentCustomerData.FirstName;
+            existingCustomer.LastName = currentCustomerData.LastName;
+            existingCustomer.Phone = currentCustomerData.Phone;
+            existingCustomer.Email = currentCustomerData.Email;
+
+            currentCustomerData = new CustomerRecord();
+            GenerateRandomId();
+        }
+    }
+
+    private void ClearFields()
+    {
+        currentCustomerData = new CustomerRecord();
+        GenerateRandomId();
+    }
+
+    private void BanCustomer(int id)
+    {
+        Console.WriteLine($"Customer {id} has been banned.");
+    }
+
+    private void DeleteCustomer(int id)
+    {
+        var toRemove = customerRecords.FirstOrDefault(c => c.Id == id);
+        if (toRemove != null)
+        {
+            customerRecords.Remove(toRemove);
+        }
+    }
+
+    private void DiscountCustomer(int id)
+    {
+        Console.WriteLine($"Customer {id} got a discount.");
+    }
+}
