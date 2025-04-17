@@ -1,0 +1,72 @@
+﻿@page "/rental"
+
+@using Final_Project.Components.Pages.Data;
+
+<style>
+    .container {
+        display: grid;
+        grid-template-areas:
+            "header1 header1 header2 header2"
+            "menu1 content1 menu2 content2"
+            "footer1 footer1 footer2 footer3";
+        grid-template-columns: 1fr 3fr;
+        gap: 5px;
+        background-color: #2196F3;
+        padding: 5px;
+    }
+
+        .container > div {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+        }
+
+            .container > div.header {
+                grid-area: header;
+                text-align: center;
+            }
+
+            .container > div.menu {
+                grid-area: menu;
+            }
+
+            .container > div.content {
+                grid-area: content;
+            }
+
+            .container > div.footer {
+                grid-area: footer;
+            }
+
+
+
+
+</style>
+
+<h1>Counter</h1>
+
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+    <div id="myDropdown" class="dropdown-content">
+        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+        <a href="#about">About</a>
+        <a href="#base">Base</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+        <a href="#custom">Custom</a>
+        <a href="#support">Support</a>
+        <a href="#tools">Tools</a>
+    </div>
+</div>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
