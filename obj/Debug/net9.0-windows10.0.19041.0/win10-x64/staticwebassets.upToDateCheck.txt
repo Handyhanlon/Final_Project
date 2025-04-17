@@ -1,0 +1,8 @@
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\wwwroot\index.html
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\wwwroot\css\bootstrap\bootstrap.min.css.map
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\wwwroot\css\bootstrap\bootstrap.min.css
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\wwwroot\css\app.css
+wwwroot\css\app.css
+wwwroot\css\bootstrap\bootstrap.min.css
+wwwroot\css\bootstrap\bootstrap.min.css.map
+wwwroot\index.html
