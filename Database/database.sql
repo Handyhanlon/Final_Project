@@ -75,6 +75,54 @@ CREATE TABLE IF NOT EXISTS `rental` (
 -- Dumping data for table cpsy200_final.rental: ~0 rows (approximately)
 DELETE FROM `rental`;
 
+-- Insert data into customer table
+INSERT INTO `customer` (`FirstName`, `LastName`, `Phone`, `Email`) VALUES
+('John', 'Smith', 5551234567, 'john.smith@email.com'),
+('Sarah', 'Johnson', 5552345678, 'sarah.j@email.com'),
+('Michael', 'Williams', 5553456789, 'mike.w@email.com'),
+('Emily', 'Brown', 5554567890, 'emily.b@email.com'),
+('David', 'Jones', 5555678901, 'david.j@email.com');
+
+-- Insert equipment categories
+INSERT INTO `equipment` (`CategoryID`, `CategoryName`, `Name`, `Description`, `DailyRentalCost`) VALUES
+-- Power tools (Category 10)
+(10, 'Power tools', 'Drill Master 2000', 'Heavy-duty cordless drill with 2 batteries', 25.00),
+(10, 'Power tools', 'Circular Saw Pro', '7-1/4 inch circular saw with laser guide', 30.00),
+(10, 'Power tools', 'Impact Driver', '1/4 inch hex impact driver, 1800 in-lbs torque', 22.50),
+
+-- Yard equipment (Category 20)
+(20, 'Yard equipment', 'Lawn Mower', '21-inch self-propelled gas lawn mower', 40.00),
+(20, 'Yard equipment', 'Hedge Trimmer', '24-inch dual-action hedge trimmer', 28.00),
+(20, 'Yard equipment', 'Leaf Blower', '200 MPH gas-powered leaf blower', 32.00),
+
+-- Compressors (Category 30)
+(30, 'Compressors', 'Air Compressor 6gal', '6 gallon portable air compressor', 35.00),
+(30, 'Compressors', 'Air Compressor 20gal', '20 gallon stationary air compressor', 50.00),
+
+-- Generators (Category 40)
+(40, 'Generators', 'Portable Generator 3500W', '3500 watt portable generator', 75.00),
+(40, 'Generators', 'Standby Generator 7500W', '7500 watt standby generator', 120.00),
+
+-- Air tools (Category 50)
+(50, 'Air tools', 'Air Impact Wrench', '1/2 inch drive impact wrench', 30.00),
+(50, 'Air tools', 'Air Ratchet', '3/8 inch drive air ratchet', 25.00),
+(50, 'Air tools', 'Air Nail Gun', 'Framing nail gun, 2-3.5 inch nails', 35.00);
+
+-- Insert rental records
+INSERT INTO `rental` (`CurrentDate`, `CustomerID`, `EquipmentID`, `RentalDate`, `ReturnDate`) VALUES
+(CURDATE(), 1, 1, '2023-05-01', '2023-05-03'),
+(CURDATE(), 2, 4, '2023-05-02', '2023-05-05'),
+(CURDATE(), 3, 7, '2023-05-03', '2023-05-07'),
+(CURDATE(), 4, 10, '2023-05-04', '2023-05-06'),
+(CURDATE(), 5, 12, '2023-05-05', '2023-05-08');
+
+-- Insert equipment_rental records (junction table)
+INSERT INTO `equipment_rental` (`EquipmentID`, `RentalID`) VALUES
+(1, 1),
+(4, 2),
+(7, 3),
+(10, 4),
+(12, 5);
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
