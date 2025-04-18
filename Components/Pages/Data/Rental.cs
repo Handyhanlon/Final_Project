@@ -124,7 +124,7 @@ namespace Final_Project.Components.Pages.Data
                 }
             }
         }
-        public double CalculateRentalCost()
+        public static double CalculateRentalCost(int equipmentID, DateTime startDate, DateTime endDate)
         {
             TimeSpan rentalDuration = endDate - startDate;
             double totalCost = rentalDuration.TotalDays * Equipment.GetEquipment().FirstOrDefault(e => e.equipmentID == equipmentID)?.dailyRentalCost ?? 0;
