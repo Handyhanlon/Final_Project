@@ -8,7 +8,10 @@
     display: grid;
     grid-template-areas:
     "header1 header1 header2 header2"
-    "menu1 content1 menu2 content2"
+    "label1 content1 label2 content2"
+    "label3 content3 label4 content4"
+    "label5 content5 label6 content6"
+    "label7 content7 label8 content8"
     "footer1 footer1 footer2 footer3";
     grid-template-columns: 1fr 3fr 1fr 3fr;
     gap: 5px;
@@ -26,12 +29,36 @@
     text-align: center;
     }
 
-    .container > div.menu1 {
-    grid-area: menu1;
+    .container > div.label1 {
+    grid-area: label1;
     }
 
     .container > div.content1 {
     grid-area: content1;
+    }
+
+    .container > div.label3 {
+    grid-area: label3;
+    }
+
+    .container > div.content3 {
+    grid-area: content3;
+    }
+
+    .container > div.label5 {
+    grid-area: label5;
+    }
+
+    .container > div.content5 {
+    grid-area: content5;
+    }
+
+    .container > div.label7 {
+    grid-area: label7;
+    }
+
+    .container > div.content7 {
+    grid-area: content7;
     }
 
     .container > div.footer1 {
@@ -44,12 +71,34 @@
     text-align: center;
     }
 
-    .container > div.menu2 {
-    grid-area: menu2;
+    .container > div.label2 {
+    grid-area: label2;
     }
 
     .container > div.content2 {
     grid-area: content2;
+    }
+
+    .container > div.label4 {
+    grid-area: label4;
+    }
+    .container > div.content4 {
+    grid-area: content4;
+    }
+
+    .container > div.label6 {
+    grid-area: label6;
+    }
+
+    .container > div.content6 {
+    grid-area: content6;
+    }
+    .container > div.label8 {
+    grid-area: label8;
+    }
+
+    .container > div.content8 {
+    grid-area: content8;
     }
 
     .container > div.footer2 {
@@ -67,7 +116,7 @@
 <div class="container">
     <div class="header1"><h1>New Rental</h1></div>
 
-    <div class="menu1">
+    <div class="label1">
         <h3>Customer:</h3>
 
     </div>
@@ -80,15 +129,45 @@
         Placeholder="Search customers...">
             <ItemTemplate>
                 <div>
-					<strong>@context.customerID</strong>, @context.firstName @context.lastName, @context.email
-				</div>
+                    <strong>@context.customerID</strong>, @context.firstName @context.lastName, @context.email
+                </div>
             </ItemTemplate>
         </SearchableDropdown>
         <p>Selected: @SelectedCustomer?.customerID, @SelectedCustomer?.firstName @SelectedCustomer?.lastName</p>
     </div>
+    <div class="label3">
+        <h3>Equipment:</h3>
+    </div>
+    <div class="content3">
+        <SearchableDropdown TItem="Equipment"
+        Items="equipments"
+        SelectedItem="SelectedEquipment"
+        SelectedItemChanged="OnEquipmentSelected"
+        Placeholder="Search Equipment...">
+            <ItemTemplate>
+                <div>
+                    <strong>@context.equipmentID</strong>, @context.name
+                </div>
+            </ItemTemplate>
+        </SearchableDropdown>
+        <p>Selected: @SelectedEquipment?.equipmentID, @SelectedEquipment?.name @SelectedEquipment?.description</p>
+    </div>
+    <div class="label5">
+        <h3>Start Date:</h3>
+    </div>
+    <div class="content5">
+        <input type="date" id="startDate" name="startDate" @bind="startDate" @bind:after="GetRentalCost"/>
+    </div>
+    <div class="label7">
+        <h3>Return Date:</h3>
+    </div>
+    <div class="content7">
+        <input type="date" id="returnDate" name="returnDate" @bind="returnDate" @bind:after="GetRentalCost"/>
+    </div>
     <div class="footer1">
-        <h4>Footer</h4>
-
+        <h4>$@rentalCost=</h4>
+		<h4>Rental Cost</h4>
+		<button @onclick="AddNewRental">Add Rental</button>
     </div>
 
     <div class="header2"><h1>Find a Rental</h1></div>
@@ -117,7 +196,38 @@
     private void OnCustomerSelected(Customer customer)
     {
         SelectedCustomer = customer;
-        // You can add additional logic here when an item is selected
     }
 
+    private List<Equipment> equipments = Equipment.GetEquipment();
+
+    private Equipment SelectedEquipment { get; set; }
+
+    double rentalCost = 0.0;
+
+    private void OnEquipmentSelected(Equipment equipment)
+    {
+        SelectedEquipment = equipment;
+        GetRentalCost();
+    }
+
+    private DateTime startDate = DateTime.Now;
+
+    private DateTime returnDate = DateTime.Now.AddDays(1);
+    
+    private DateTime currentDate = DateTime.Now;
+	
+
+    private void GetRentalCost()
+    {
+		rentalCost = Rental.CalculateRentalCost(SelectedEquipment.equipmentID, startDate, returnDate);
+    }
+	private void AddNewRental()
+	{
+		var random = new Random();
+		int rentalID = random.Next(1000, 9999); // Generate a random rental ID, this will not be the rental ID in the database.
+        Rental rental = new Rental(rentalID, currentDate, SelectedCustomer.customerID, SelectedEquipment.equipmentID, startDate, returnDate);
+		Rental.AddRental(rental);
+		SelectedCustomer = null;
+		SelectedEquipment = null;
+	}
 }
