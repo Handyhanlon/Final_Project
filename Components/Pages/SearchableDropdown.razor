@@ -1,0 +1,83 @@
+﻿@typeparam TItem
+
+<div class="searchable-dropdown">
+    <div class="dropdown-input" @onclick="ToggleDropdown">
+        <input type="text"
+               value="@SearchText"
+               @oninput="HandleSearch"
+               placeholder="@Placeholder" />
+        <span class="dropdown-arrow">▼</span>
+    </div>
+
+    @if (IsOpen)
+    {
+        <div class="dropdown-list">
+            @if (FilteredItems.Any())
+            {
+                @foreach (var item in FilteredItems)
+                {
+                    <div class="dropdown-item"
+                         @onclick="() => SelectItem(item)"
+                         @key="item">
+                        @if (ItemTemplate != null)
+                        {
+                            @ItemTemplate(item)
+                        }
+                        else
+                        {
+                            @item.ToString()
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="dropdown-item no-results">No results found</div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+    [Parameter] public TItem SelectedItem { get; set; }
+    [Parameter] public EventCallback<TItem> SelectedItemChanged { get; set; }
+    [Parameter] public RenderFragment<TItem> ItemTemplate { get; set; }
+    [Parameter] public Func<TItem, string> TextSelector { get; set; } = item => item?.ToString();
+    [Parameter] public string Placeholder { get; set; } = "Search...";
+
+    private bool IsOpen { get; set; }
+    private string SearchText { get; set; } = string.Empty;
+    private IEnumerable<TItem> FilteredItems => Items.Where(item =>
+        TextSelector(item).Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+
+    private void ToggleDropdown()
+    {
+        IsOpen = !IsOpen;
+        if (IsOpen)
+        {
+            SearchText = string.Empty;
+        }
+    }
+
+    private async Task SelectItem(TItem item)
+    {
+        SelectedItem = item;
+        await SelectedItemChanged.InvokeAsync(item);
+        SearchText = TextSelector(item);
+        IsOpen = false;
+    }
+
+    private void HandleSearch(ChangeEventArgs e)
+    {
+        SearchText = e.Value?.ToString() ?? string.Empty;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (SelectedItem != null)
+        {
+            SearchText = TextSelector(SelectedItem);
+        }
+    }
+}
