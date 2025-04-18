@@ -73,7 +73,18 @@
     </div>
 
     <div class="content1">
-
+        <SearchableDropdown TItem="Customer"
+        Items="customers"
+        SelectedItem="SelectedCustomer"
+        SelectedItemChanged="OnCustomerSelected"
+        Placeholder="Search customers...">
+            <ItemTemplate>
+                <div>
+					<strong>@context.customerID</strong>, @context.firstName @context.lastName, @context.email
+				</div>
+            </ItemTemplate>
+        </SearchableDropdown>
+        <p>Selected: @SelectedCustomer?.customerID, @SelectedCustomer?.firstName @SelectedCustomer?.lastName</p>
     </div>
     <div class="footer1">
         <h4>Footer</h4>
@@ -99,22 +110,14 @@
 
 
 @code {
+    private List<Customer> customers = Customer.GetCustomers();
 
-    string filterString = "";
+    private Customer SelectedCustomer{ get; set; }
 
-    Customer customer;
-    int customerID;
-    string firstName;
-    string lastName;
-    string email;
-    int? phone;
-
-    List<Customer> customers;
-    List<String> customerNames;
-
-
-    private void customerFilter()
+    private void OnCustomerSelected(Customer customer)
     {
-        customers = Customer.GetCustomers(filterString);
+        SelectedCustomer = customer;
+        // You can add additional logic here when an item is selected
     }
+
 }
