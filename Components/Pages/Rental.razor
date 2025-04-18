@@ -10,7 +10,7 @@
     "header1 header1 header2 header2"
     "menu1 content1 menu2 content2"
     "footer1 footer1 footer2 footer3";
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 3fr 1fr 3fr;
     gap: 5px;
     background-color: #2196F3;
     padding: 5px;
@@ -70,24 +70,21 @@
     <div class="menu1">
         <h3>Customer:</h3>
 
-
     </div>
-    <div class="content1">
-        <select class="form-control" @bind="customerID" @onclick="@customerFilter">
-            <option value="@customers">@customers</option>
-            @if (customerNames == null)
-            {
-                <option>....</option>
-            }
-            else
-            {
-                @foreach (string c in customerNames)
-                {
-                    <option value=@c>@c</option>
-                }
-            }
-        </select>
 
+    <div class="content1">
+        <SearchableDropdown TItem="Customer"
+        Items="customers"
+        SelectedItem="SelectedCustomer"
+        SelectedItemChanged="OnCustomerSelected"
+        Placeholder="Search customers...">
+            <ItemTemplate>
+                <div>
+					<strong>@context.customerID</strong>, @context.firstName @context.lastName, @context.email
+				</div>
+            </ItemTemplate>
+        </SearchableDropdown>
+        <p>Selected: @SelectedCustomer?.customerID, @SelectedCustomer?.firstName @SelectedCustomer?.lastName</p>
     </div>
     <div class="footer1">
         <h4>Footer</h4>
@@ -113,26 +110,14 @@
 
 
 @code {
+    private List<Customer> customers = Customer.GetCustomers();
 
-    string filterString = "";
+    private Customer SelectedCustomer{ get; set; }
 
-    Customer customer;
-    int customerID;
-    string firstName;
-    string lastName;
-    string email;
-    int? phone;
-
-    List<Customer> customers;
-    List<String> customerNames;
-
-
-    private void customerFilter()
+    private void OnCustomerSelected(Customer customer)
     {
-        customers = Customer.GetCustomers(filterString);
-        foreach (Customer customer in customers)
-        {
-            customerNames.Append(customer.firstName + ' ' + customer.lastName);
-        }
+        SelectedCustomer = customer;
+        // You can add additional logic here when an item is selected
     }
+
 }

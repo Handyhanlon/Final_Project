@@ -410,7 +410,6 @@ C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\n
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\scopedcss\bundle\Final_Project.styles.css
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\scopedcss\projectbundle\Final_Project.bundle.scp.css
-C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\oasby3b6yj-e5tk7yf482.gz
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\g4van7woaj-6gzpyzhau4.gz
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\cjmuoy0ont-8inm30yfxf.gz
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\4jrjrjrlqw-3zt6jvftmc.gz
@@ -428,7 +427,6 @@ C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\n
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\staticwebassets.upToDateCheck.txt
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\zv2yec2rvu-61yzzyfmy4.br
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\dglflrrq1a-61yzzyfmy4.br
-C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\oasby3b6yj-e5tk7yf482.br
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\g4van7woaj-6gzpyzhau4.br
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\cjmuoy0ont-8inm30yfxf.br
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\4jrjrjrlqw-3zt6jvftmc.br
@@ -532,3 +530,5 @@ C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\n
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\qualifiers.txt
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\qualifiers.txt.intermediate
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\MultipleQualifiersPerDimensionFound.txt
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\oasby3b6yj-kv5bdfly0x.gz
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\oasby3b6yj-kv5bdfly0x.br
