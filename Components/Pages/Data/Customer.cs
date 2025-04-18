@@ -14,9 +14,9 @@ namespace Final_Project.Components.Pages.Data
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string email { get; set; }
-        public int? phone { get; set; }
+        public long? phone { get; set; }
         
-        public Customer (int customerID, string firstName, string lastName,  int? phone, string email)
+        public Customer (int customerID, string firstName, string lastName,  long? phone, string email)
         {
             this.customerID = customerID;
             this.firstName = firstName;
@@ -56,7 +56,7 @@ namespace Final_Project.Components.Pages.Data
                             int customerID = reader.GetInt32(0);
                             string firstName = reader.GetString(1);
                             string lastName = reader.GetString(2);
-                            int? phone = reader.GetInt32(3);
+                            long? phone = reader.GetInt64(3);
                             string email = reader.GetString(4);
 
                             Customer customer = new Customer(customerID, firstName, lastName, phone, email);

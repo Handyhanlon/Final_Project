@@ -10,7 +10,7 @@
     "header1 header1 header2 header2"
     "menu1 content1 menu2 content2"
     "footer1 footer1 footer2 footer3";
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 3fr 1fr 3fr;
     gap: 5px;
     background-color: #2196F3;
     padding: 5px;
@@ -70,23 +70,9 @@
     <div class="menu1">
         <h3>Customer:</h3>
 
-
     </div>
+
     <div class="content1">
-        <select class="form-control" @bind="customerID" @onclick="@customerFilter">
-            <option value="@customers">@customers</option>
-            @if (customerNames == null)
-            {
-                <option>....</option>
-            }
-            else
-            {
-                @foreach (string c in customerNames)
-                {
-                    <option value=@c>@c</option>
-                }
-            }
-        </select>
 
     </div>
     <div class="footer1">
@@ -130,9 +116,5 @@
     private void customerFilter()
     {
         customers = Customer.GetCustomers(filterString);
-        foreach (Customer customer in customers)
-        {
-            customerNames.Append(customer.firstName + ' ' + customer.lastName);
-        }
     }
 }

@@ -532,3 +532,5 @@ C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\n
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\qualifiers.txt
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\qualifiers.txt.intermediate
 C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\MultipleQualifiersPerDimensionFound.txt
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\oasby3b6yj-kv5bdfly0x.gz
+C:\Users\chris\OneDrive\Documents\GitHub\Final-Project\Final_Project\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\compressed\publish\oasby3b6yj-kv5bdfly0x.br
