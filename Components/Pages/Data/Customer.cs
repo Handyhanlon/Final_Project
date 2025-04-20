@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
 using System.Threading.Tasks;
-using static Microsoft.Maui.ApplicationModel.Permissions;
 using MySqlConnector;
-using System.Reflection.PortableExecutable;
 
 namespace Final_Project.Components.Pages.Data
 {
     public class Customer
     {
-        public int customerID { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string email { get; set; }
-        public long? phone { get; set; }
-        
-        public Customer (int customerID, string firstName, string lastName,  long? phone, string email)
+        public int CustomerID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public long? Phone { get; set; }
+
+        public Customer(int customerID, string firstName, string lastName, long? phone, string email)
         {
-            this.customerID = customerID;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.phone = phone;
-            this.email = email;
+            CustomerID = customerID;
+            FirstName = firstName;
+            LastName = lastName;
+            Phone = phone;
+            Email = email;
         }
 
         public static MySqlConnectionStringBuilder builderString = new MySqlConnectionStringBuilder()
@@ -34,108 +31,84 @@ namespace Final_Project.Components.Pages.Data
             Database = "cpsy200_final"
         };
 
-
-        public static List<Customer> GetCustomers()
+        public static async Task<List<Customer>> GetCustomersAsync()
         {
             List<Customer> customers = new List<Customer>();
             using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
             {
                 try
                 {
-                    connection.Open();
-
-                    string query = $"SELECT * FROM customer";
+                    await connection.OpenAsync();
+                    string query = "SELECT * FROM customer";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
+                    using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-
-                        int customerID = reader.GetInt32(0);
-                        string firstName = reader.GetString(1);
-                        string lastName = reader.GetString(2);
-
-                        // Handle phone number carefully
-                        long? phone = null;
-                        if (!reader.IsDBNull(3))
+                        while (await reader.ReadAsync())
                         {
-                            try
-                            {
-                                phone = reader.GetInt64(3); // Using GetInt64 for long type
-                            }
-                            catch
-                            {
-                                Console.WriteLine($"Error parsing phone number for customer {customerID}");
-                            }
+                            customers.Add(new Customer(
+                                reader.GetInt32("CustomerID"),
+                                reader.GetString("FirstName"),
+                                reader.GetString("LastName"),
+                                reader.IsDBNull("Phone") ? null : reader.GetInt64("Phone"),
+                                reader.GetString("Email")
+                            ));
                         }
-
-                        string email = reader.GetString(4);
-
-                        Customer customer = new Customer(customerID, firstName, lastName, phone, email);
-                        customers.Add(customer);
                     }
-
-                    connection.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                }
-                return customers;
-            }
-        }
-        public static void AddCustomer(string firstName, string lastName, long? phone, string email)
-        {
-            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    string query = $"INSERT INTO customer (firstName, lastName, phone, email) VALUES ('{firstName}', '{lastName}', {phone}, '{email}')";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
+            return customers;
         }
 
-        public static Customer FindCustomerByID(int customerID)
+        public static async Task AddCustomerAsync(Customer customer)
         {
             using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
             {
                 try
                 {
-                    connection.Open();
-                    string query = $"SELECT * FROM customer WHERE customerID = '{customerID}'";
+                    await connection.OpenAsync();
+                    string query = @"INSERT INTO customer 
+                                    (FirstName, LastName, Phone, Email) 
+                                    VALUES (@FirstName, @LastName, @Phone, @Email)";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", customer.LastName);
+                    cmd.Parameters.AddWithValue("@Phone", customer.Phone ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", customer.Email);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static async Task<Customer> FindCustomerByIDAsync(int customerID)
+        {
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    string query = "SELECT * FROM customer WHERE CustomerID = @CustomerID";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@CustomerID", customerID);
+
+                    using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        if (reader.Read())
+                        if (await reader.ReadAsync())
                         {
-                            string firstName = reader.GetString(1);
-                            string lastName = reader.GetString(2);
-                            long? phone = null;
-                            if (!reader.IsDBNull(3))
-                            {
-                                try
-                                {
-                                    phone = reader.GetInt64(3); // Using GetInt64 for long type
-                                }
-                                catch
-                                {
-                                    Console.WriteLine($"Error parsing phone number for customer {customerID}");
-                                }
-                            }
-
-                            string email = reader.GetString(4);
-                            Customer customer = new Customer(customerID, firstName, lastName, phone, email);
-                            connection.Close();
-                            return customer;
+                            return new Customer(
+                                customerID,
+                                reader.GetString("FirstName"),
+                                reader.GetString("LastName"),
+                                reader.IsDBNull("Phone") ? null : reader.GetInt64("Phone"),
+                                reader.GetString("Email")
+                            );
                         }
                     }
                 }
@@ -146,9 +119,52 @@ namespace Final_Project.Components.Pages.Data
                 return null;
             }
         }
-        public string CustomerToString()
+
+        public static async Task UpdateCustomerAsync(Customer customer)
         {
-            return $"{customerID} {firstName} {lastName} {phone} {email}";
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    string query = @"UPDATE customer SET 
+                                    FirstName = @FirstName, 
+                                    LastName = @LastName, 
+                                    Phone = @Phone, 
+                                    Email = @Email 
+                                    WHERE CustomerID = @CustomerID";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@CustomerID", customer.CustomerID);
+                    cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", customer.LastName);
+                    cmd.Parameters.AddWithValue("@Phone", customer.Phone ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", customer.Email);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static async Task DeleteCustomerAsync(int customerID)
+        {
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    string query = "DELETE FROM customer WHERE CustomerID = @CustomerID";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@CustomerID", customerID);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
         }
     }
 }

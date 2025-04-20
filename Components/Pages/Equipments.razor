@@ -1,8 +1,9 @@
 ﻿@page "/equipments"
-@using System.ComponentModel.DataAnnotations
+@using Final_Project.Components.Pages.Data
 
 <h1>Equipment</h1>
 <style>
+    /* Your existing CSS remains unchanged */
     .container {
         display: flex;
         gap: 20px;
@@ -180,38 +181,49 @@
 <div class="container">
     <div class="equipment-list-section">
         <h2>Equipment List</h2>
-        <ul class="equipment-list">
-            @foreach (var equipment in equipmentList)
-            {
-                <li>
-                    <label>
-                        <input type="checkbox" @bind="equipment.IsSelected" />
-                        @equipment.Name
-                    </label>
-                    <div class="actions">
-                        <button class="edit">✏️</button>
-                        <button class="delete" @onclick="() => RemoveEquipment(equipment.Id)">🗑️</button>
-                    </div>
-                </li>
-            }
-        </ul>
-        <div class="equipment-list-controls">
-            <button @onclick="ModifySelectedEquipment">Modify Equipment</button>
-            <button @onclick="RemoveSelectedEquipment">Remove Equipment</button>
-        </div>
-        <div class="pagination">
-            <button class="@(currentPage == 1 ? "active" : "")">1</button>
-            <button class="@(currentPage == 2 ? "active" : "")">2</button>
-            <button class="@(currentPage == 3 ? "active" : "")">3</button>
-            <span>...</span>
-            <button class="@(currentPage == 67 ? "active" : "")">67</button>
-            <button class="@(currentPage == 68 ? "active" : "")">68</button>
-        </div>
+        @if (equipmentList == null)
+        {
+            <p>Loading equipment...</p>
+        }
+        else if (!equipmentList.Any())
+        {
+            <p>No equipment found.</p>
+        }
+        else
+        {
+            <ul class="equipment-list">
+                @foreach (var equipment in equipmentList)
+                {
+                    <li>
+                        <label>
+                            <input type="checkbox" @bind="equipment.IsSelected" />
+                            @equipment.Name
+                        </label>
+                        <div class="actions">
+                            <button class="edit">✏️</button>
+                            <button class="delete" @onclick="() => RemoveEquipmentAsync(equipment.EquipmentID)">🗑️</button>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <div class="equipment-list-controls">
+                <button @onclick="ModifySelectedEquipment">Modify Equipment</button>
+                <button @onclick="RemoveSelectedEquipmentAsync">Remove Equipment</button>
+            </div>
+            <div class="pagination">
+                <button class="@(currentPage == 1 ? "active" : "")">1</button>
+                <button class="@(currentPage == 2 ? "active" : "")">2</button>
+                <button class="@(currentPage == 3 ? "active" : "")">3</button>
+                <span>...</span>
+                <button class="@(currentPage == 67 ? "active" : "")">67</button>
+                <button class="@(currentPage == 68 ? "active" : "")">68</button>
+            </div>
+        }
     </div>
 
     <div class="add-equipment-section">
         <h2>Add Equipment</h2>
-        <form class="add-equipment-form" @onsubmit="AddEquipmentItem">
+        <form class="add-equipment-form" @onsubmit="AddEquipmentItemAsync">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" id="name" @bind="newEquipment.Name" />
@@ -221,12 +233,12 @@
                 <input type="text" id="description" @bind="newEquipment.Description" />
             </div>
             <div class="form-group">
-                <label for="category">Category:</label>
-                <input type="text" id="category" @bind="newEquipment.Category" />
+                <label for="category">Category Name:</label>
+                <input type="text" id="category" @bind="newEquipment.CategoryName" />
             </div>
             <div class="form-group">
                 <label for="daily-cost">Daily Cost:</label>
-                <input type="number" id="daily-cost" @bind="newEquipment.DailyCost" />
+                <input type="number" id="daily-cost" @bind="newEquipment.DailyRentalCost" />
             </div>
             <button type="submit">Add Equipment</button>
         </form>
@@ -234,47 +246,58 @@
 </div>
 
 @code {
-    public class EquipmentItem
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = "";
-        public string Description { get; set; } = "";
-        public string Category { get; set; } = "";
-        public decimal DailyCost { get; set; }
-        public bool IsSelected { get; set; } = false;
-    }
-
-    private List<EquipmentItem> equipmentList = new List<EquipmentItem>
-    {
-        new EquipmentItem { Id = 1, Name = "Ladder", Description = "Extension ladder", Category = "Tools", DailyCost = 15.00m },
-        new EquipmentItem { Id = 2, Name = "Drill", Description = "Cordless power drill", Category = "Tools", DailyCost = 12.50m },
-        new EquipmentItem { Id = 3, Name = "Generator", Description = "Portable generator", Category = "Power", DailyCost = 25.00m }
-        // Add more equipment items here
-    };
-
-    private EquipmentItem newEquipment = new EquipmentItem();
-    private int nextId = 4;
+    private List<Equipment> equipmentList;
+    private Equipment newEquipment = new Equipment(0, 0, "", "", "", 0.0); // Initialize with default values
     private int currentPage = 1; // For pagination
+    // Directly bind to a property of the Equipment object
+    // private List<int> selectedEquipmentIds = new List<int>();
 
-    private void AddEquipmentItem()
+    protected override async Task OnInitializedAsync()
     {
-        newEquipment.Id = nextId++;
-        equipmentList.Add(newEquipment);
-        newEquipment = new EquipmentItem(); // Clear the form
+        equipmentList = await Equipment.GetEquipmentAsync();
+        // Initialize IsSelected property (if needed for default states)
+        if (equipmentList != null)
+        {
+            foreach (var equipment in equipmentList)
+            {
+                equipment.IsSelected = false; // Default to not selected
+            }
+        }
     }
 
-    private void RemoveEquipment(int id)
+    private async Task AddEquipmentItemAsync()
     {
-        equipmentList.RemoveAll(e => e.Id == id);
+        // Basic validation
+        if (!string.IsNullOrEmpty(newEquipment.Name) && !string.IsNullOrEmpty(newEquipment.CategoryName) && newEquipment.DailyRentalCost > 0)
+        {
+            // We don't set EquipmentID here as it's auto-incremented in the database
+            await Equipment.AddEquipmentAsync(new Equipment(0, 0, newEquipment.CategoryName, newEquipment.Name, newEquipment.Description, newEquipment.DailyRentalCost));
+            newEquipment = new Equipment(0, 0, "", "", "", 0.0); // Clear the form
+            equipmentList = await Equipment.GetEquipmentAsync(); // Refresh the list
+            StateHasChanged(); // Re-render the component
+        }
+        else
+        {
+            Console.WriteLine("Please fill in all required fields and ensure daily cost is greater than zero.");
+
+        }
     }
 
+    private async Task RemoveEquipmentAsync(int equipmentId)
+    {
+        await Equipment.DeleteEquipmentAsync(equipmentId);
+        equipmentList = await Equipment.GetEquipmentAsync(); // Refresh the list
+        StateHasChanged(); // Re-render the component
+    }
+
+    // Now we work directly with the IsSelected property of the Equipment object
     private void ModifySelectedEquipment()
     {
-        var selectedItems = equipmentList.Where(e => e.IsSelected).ToList();
-        if (selectedItems.Any())
+        var selectedItems = equipmentList?.Where(e => e.IsSelected).ToList();
+        if (selectedItems?.Any() == true)
         {
-            Console.WriteLine($"Modifying {selectedItems.Count} equipment items.");
-            // Implement your modify logic here, perhaps navigate to an edit page
+            Console.WriteLine($"Modifying {selectedItems.Count} equipment items (IDs: {string.Join(", ", selectedItems.Select(e => e.EquipmentID))}).");
+            // Implement your modify logic here, perhaps navigate to an edit page with the selected IDs
         }
         else
         {
@@ -282,8 +305,21 @@
         }
     }
 
-    private void RemoveSelectedEquipment()
+    private async Task RemoveSelectedEquipmentAsync()
     {
-        equipmentList.RemoveAll(e => e.IsSelected);
+        var selectedItems = equipmentList?.Where(e => e.IsSelected).ToList();
+        if (selectedItems?.Any() == true)
+        {
+            foreach (var equipmentToRemove in selectedItems.ToList()) // Iterate over a copy
+            {
+                await Equipment.DeleteEquipmentAsync(equipmentToRemove.EquipmentID);
+            }
+            equipmentList = await Equipment.GetEquipmentAsync(); // Refresh the list
+            StateHasChanged(); // Re-render the component
+        }
+        else
+        {
+            Console.WriteLine("No equipment selected for removal.");
+        }
     }
 }

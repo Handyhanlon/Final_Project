@@ -1,7 +1,8 @@
 ﻿@page "/customers"
+@using Final_Project.Components.Pages.Data
 @using System.ComponentModel.DataAnnotations
 
-<h1>Customer Form</h1>
+<h1>Customer Management</h1>
 <style>
     .form-container {
         display: flex;
@@ -110,157 +111,168 @@
         opacity: 0.85;
     }
 </style>
-
 <div class="form-container">
     <div class="form-group">
         <label>Customer ID:</label>
-        <input type="number" @bind="currentCustomerData.Id" readonly />
+        <input type="number" @bind="currentCustomer.CustomerID" readonly />
     </div>
     <div class="form-group">
         <label>First Name:</label>
-        <input type="text" @bind="currentCustomerData.FirstName" />
+        <input type="text" @bind="currentCustomer.FirstName" />
     </div>
     <div class="form-group">
         <label>Last Name:</label>
-        <input type="text" @bind="currentCustomerData.LastName" />
+        <input type="text" @bind="currentCustomer.LastName" />
     </div>
     <div class="form-group">
         <label>Phone:</label>
-        <input type="tel" @bind="currentCustomerData.Phone" />
+        <input type="tel" @bind="currentCustomer.Phone" />
     </div>
     <div class="form-group">
         <label>Email:</label>
-        <input type="email" @bind="currentCustomerData.Email" />
+        <input type="email" @bind="currentCustomer.Email" />
     </div>
 
     <div class="button-group">
-        <button @onclick="AddCustomer">Add Customer</button>
-        <button @onclick="UpdateCustomer">Update Customer</button>
-        <button @onclick="ClearFields">Clear Fields</button>
+        <button @onclick="AddCustomer" disabled="@isBusy">Add Customer</button>
+        <button @onclick="UpdateCustomer" disabled="@isBusy">Update Customer</button>
+        <button @onclick="ClearForm" disabled="@isBusy">Clear</button>
     </div>
 </div>
 
-<table class="customer-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var person in customerRecords)
-        {
+@if (isLoading)
+{
+    <p>Loading customers...</p>
+}
+else if (customers.Count == 0)
+{
+    <p>No customers found</p>
+}
+else
+{
+    <table class="customer-table">
+        <thead>
             <tr>
-                <td>@person.Id</td>
-                <td>@person.FirstName</td>
-                <td>@person.LastName</td>
-                <td>@person.Phone</td>
-                <td>@person.Email</td>
-                <td class="action-buttons">
-                    <button class="ban" @onclick="() => BanCustomer(person.Id)">Ban</button>
-                    <button class="delete" @onclick="() => DeleteCustomer(person.Id)">Delete</button>
-                    <button class="discount" @onclick="() => DiscountCustomer(person.Id)">Discount</button>
-                </td>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+                <tr>
+                    <td>@customer.CustomerID</td>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td>@customer.Phone</td>
+                    <td>@customer.Email</td>
+                    <td class="action-buttons">
+                        <button class="edit" @onclick="() => EditCustomer(customer)" disabled="@isBusy">Edit</button>
+                        <button class="delete" @onclick="() => DeleteCustomer(customer.CustomerID)" disabled="@isBusy">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
-    // Customer class definition
-    public class CustomerRecord
+    private List<Customer> customers = new();
+    private Customer currentCustomer = new(0, "", "", null, "");
+    private bool isLoading = true;
+    private bool isBusy = false;
+
+    protected override async Task OnInitializedAsync()
     {
-        public int Id { get; set; }
-
-        [Required(ErrorMessage = "First name is required")]
-        public string FirstName { get; set; } = "";
-
-        [Required(ErrorMessage = "Last name is required")]
-        public string LastName { get; set; } = "";
-
-        [Phone(ErrorMessage = "Invalid phone number")]
-        public string Phone { get; set; } = "";
-
-        [EmailAddress(ErrorMessage = "Invalid email address")]
-        public string Email { get; set; } = "";
+        await LoadCustomers();
+        isLoading = false;
     }
 
-    // Instance variables with distinct names
-    private CustomerRecord currentCustomerData = new();
-    private List<CustomerRecord> customerRecords = new()
+    private async Task LoadCustomers()
     {
-        new CustomerRecord { Id = 10001, FirstName = "John", LastName = "Doe", Phone = "1234567890", Email = "john@example.com" },
-        new CustomerRecord { Id = 10002, FirstName = "Jane", LastName = "Smith", Phone = "9876543210", Email = "jane@example.com" }
-    };
-
-    protected override void OnInitialized()
-    {
-        GenerateRandomId();
-    }
-
-    private void GenerateRandomId()
-    {
-        var random = new Random();
-        currentCustomerData.Id = random.Next(10000, 99999);
-
-        while (customerRecords.Any(c => c.Id == currentCustomerData.Id))
+        try
         {
-            currentCustomerData.Id = random.Next(10000, 99999);
+            customers = await Customer.GetCustomersAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading customers: {ex.Message}");
         }
     }
 
-    private void AddCustomer()
+    private async Task AddCustomer()
     {
-        if (!string.IsNullOrWhiteSpace(currentCustomerData.FirstName) &&
-            !string.IsNullOrWhiteSpace(currentCustomerData.LastName))
+        isBusy = true;
+        try
         {
-            customerRecords.Add(currentCustomerData);
-            currentCustomerData = new CustomerRecord();
-            GenerateRandomId();
+            await Customer.AddCustomerAsync(currentCustomer);
+            await LoadCustomers();
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding customer: {ex.Message}");
+        }
+        finally
+        {
+            isBusy = false;
         }
     }
 
-    private void UpdateCustomer()
+    private async Task UpdateCustomer()
     {
-        var existingCustomer = customerRecords.FirstOrDefault(c => c.Id == currentCustomerData.Id);
-        if (existingCustomer != null)
+        isBusy = true;
+        try
         {
-            existingCustomer.FirstName = currentCustomerData.FirstName;
-            existingCustomer.LastName = currentCustomerData.LastName;
-            existingCustomer.Phone = currentCustomerData.Phone;
-            existingCustomer.Email = currentCustomerData.Email;
-
-            currentCustomerData = new CustomerRecord();
-            GenerateRandomId();
+            await Customer.UpdateCustomerAsync(currentCustomer);
+            await LoadCustomers();
+            ClearForm();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating customer: {ex.Message}");
+        }
+        finally
+        {
+            isBusy = false;
         }
     }
 
-    private void ClearFields()
+    private async Task DeleteCustomer(int customerID)
     {
-        currentCustomerData = new CustomerRecord();
-        GenerateRandomId();
-    }
-
-    private void BanCustomer(int id)
-    {
-        Console.WriteLine($"Customer {id} has been banned.");
-    }
-
-    private void DeleteCustomer(int id)
-    {
-        var toRemove = customerRecords.FirstOrDefault(c => c.Id == id);
-        if (toRemove != null)
+        isBusy = true;
+        try
         {
-            customerRecords.Remove(toRemove);
+            await Customer.DeleteCustomerAsync(customerID);
+            await LoadCustomers();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting customer: {ex.Message}");
+        }
+        finally
+        {
+            isBusy = false;
         }
     }
 
-    private void DiscountCustomer(int id)
+    private void EditCustomer(Customer customer)
     {
-        Console.WriteLine($"Customer {id} got a discount.");
+        currentCustomer = new Customer(
+            customer.CustomerID,
+            customer.FirstName,
+            customer.LastName,
+            customer.Phone,
+            customer.Email
+        );
+    }
+
+    private void ClearForm()
+    {
+        currentCustomer = new Customer(0, "", "", null, "");
     }
 }
