@@ -130,5 +130,40 @@ namespace Final_Project.Components.Pages.Data
             double totalCost = rentalDuration.TotalDays * Equipment.GetEquipment().FirstOrDefault(e => e.equipmentID == equipmentID)?.dailyRentalCost ?? 0;
             return totalCost;
         }
+        public static Rental FindRental(int rentalID)
+        {
+            Rental rental = null;
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = $"SELECT * FROM rental WHERE rentalID = '{rentalID}'";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            DateTime currentDate = reader.GetDateTime(1);
+                            int customerID = reader.GetInt32(2);
+                            int equipmentID = reader.GetInt32(3);
+                            DateTime startDate = reader.GetDateTime(4);
+                            DateTime endDate = reader.GetDateTime(5);
+                            rental = new Rental(rentalID, currentDate, customerID, equipmentID, startDate, endDate);
+                        }
+
+                        connection.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return rental;
+
+        }
+
+                
     }
 }

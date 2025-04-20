@@ -11,8 +11,8 @@
     "label1 content1 label2 content2"
     "label3 content3 label4 content4"
     "label5 content5 label6 content6"
-    "label7 content7 label8 content8"
-    "footer1 footer1 footer2 footer3";
+    "label7 content7 label8 label8"
+    "footer1 footer1 footer2 footer2";
     grid-template-columns: 1fr 3fr 1fr 3fr;
     gap: 5px;
     background-color: #2196F3;
@@ -106,11 +106,6 @@
     text-align: center
     }
 
-    .container > div.footer3 {
-    grid-area: footer3;
-    text-align: center
-    }
-
 </style>
 
 <div class="container">
@@ -124,8 +119,8 @@
     <div class="content1">
         <SearchableDropdown TItem="Customer"
         Items="customers"
-        SelectedItem="SelectedCustomer"
-        SelectedItemChanged="OnCustomerSelected"
+        SelectedItem="SelectedCustomer1"
+        SelectedItemChanged="OnCustomerSelected1"
         Placeholder="Search customers...">
             <ItemTemplate>
                 <div>
@@ -133,7 +128,7 @@
                 </div>
             </ItemTemplate>
         </SearchableDropdown>
-        <p>Selected: @SelectedCustomer?.customerID, @SelectedCustomer?.firstName @SelectedCustomer?.lastName</p>
+        <p>Selected: @SelectedCustomer1?.customerID, @SelectedCustomer1?.firstName @SelectedCustomer1?.lastName</p>
     </div>
     <div class="label3">
         <h3>Equipment:</h3>
@@ -141,8 +136,8 @@
     <div class="content3">
         <SearchableDropdown TItem="Equipment"
         Items="equipments"
-        SelectedItem="SelectedEquipment"
-        SelectedItemChanged="OnEquipmentSelected"
+        SelectedItem="SelectedEquipment1"
+        SelectedItemChanged="OnEquipmentSelected1"
         Placeholder="Search Equipment...">
             <ItemTemplate>
                 <div>
@@ -150,13 +145,13 @@
                 </div>
             </ItemTemplate>
         </SearchableDropdown>
-        <p>Selected: @SelectedEquipment?.equipmentID, @SelectedEquipment?.name @SelectedEquipment?.description</p>
+        <p>Selected: @SelectedEquipment1?.equipmentID, @SelectedEquipment1?.name @SelectedEquipment1?.description</p>
     </div>
     <div class="label5">
         <h3>Start Date:</h3>
     </div>
     <div class="content5">
-        <input type="date" id="startDate" name="startDate" @bind="startDate" @bind:after="GetRentalCost"/>
+        <input type="date" id="startDate" name="startDate" @bind="startDate1" @bind:after="GetRentalCost"/>
     </div>
     <div class="label7">
         <h3>Return Date:</h3>
@@ -166,23 +161,54 @@
     </div>
     <div class="footer1">
         <h4>$@rentalCost=</h4>
-		<h4>Rental Cost</h4>
-		<button @onclick="AddNewRental">Add Rental</button>
+        <h4>Rental Cost</h4>
+        <button @onclick="AddNewRental">Add Rental</button>
     </div>
 
     <div class="header2"><h1>Find a Rental</h1></div>
 
-    <div class="menu2">
-        <a href="#">Link 1</a><br><a href="#">Link 2</a><br><a href="#">Link 3</a>
-
-
+    <div class="label2">
+        <h3>Customer: </h3>
     </div>
     <div class="content2">
-        <h3>Lorem Ipsum</h3><p>Lorem ipsum odor amet, consectetuer adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet. Potenti dignissim litora eget montes rhoncus sapien neque urna. Cursus libero sapien integer magnis ligula lobortis quam ut.</p>
+        <select class="form-control" @bind="SelectedCustomer2" @bind:after="OnSelectedCustomer2">
+            <option value="">Select a Customer</option>
+            @foreach (var c in rentalCustomers.Where(c => c != null))
+            {
+                <option value=@c.customerID>@c.customerID, @c.firstName @c.lastName</option>
+            }
+        </select>
+    </div>
+    <div class="label4">
+        <h3>Equipment:</h3>
+    </div>
+    <div class="content4">
+        <select class="form-control" @bind="SelectedEquipment2" @bind:after="OnSelectedEquipment">
+            <option value="">Select Equipment</option>
+            @foreach (var e in rentedEquipment.Where(e => e != null))
+            {
+                <option value=@e.equipmentID>@e.equipmentID, @e.name, @e.description</option>
+            }
+        </select>
+    </div>
+    <div class="label6">
+        <h3>Rentals Found</h3>
+    </div>
+    <div class="content6">
+        <select class="form-control" @bind="SelectedRentalID" @bind:after="OnSelectedRental">
+            <option value="">Select Equipment</option>
+            @foreach (var r in rentalSelection.Where(e => e != null))
+            {
+                <option value=@r.rentalID>@r.customerID, @r.equipmentID, @r.startDate</option>
+            }
+        </select>
+    </div>
+    <div class="label8">
 
     </div>
-    <div class="footer2"><h4>Footer</h4></div>
-    <div class="footer3"><h4>Footer</h4></div>
+    <div class="footer2">
+        <button @onclick="DeleteRental">Delete Rental</button>
+    </div>
 </div>
 
 
@@ -191,43 +217,135 @@
 @code {
     private List<Customer> customers = Customer.GetCustomers();
 
-    private Customer SelectedCustomer{ get; set; }
+    private Customer SelectedCustomer1{ get; set; }
 
-    private void OnCustomerSelected(Customer customer)
+    private void OnCustomerSelected1(Customer customer)
     {
-        SelectedCustomer = customer;
+        SelectedCustomer1 = customer;
     }
 
     private List<Equipment> equipments = Equipment.GetEquipment();
 
-    private Equipment SelectedEquipment { get; set; }
+    private Equipment SelectedEquipment1 { get; set; }
 
     double rentalCost = 0.0;
 
-    private void OnEquipmentSelected(Equipment equipment)
+    private void OnEquipmentSelected1(Equipment equipment)
     {
-        SelectedEquipment = equipment;
+        SelectedEquipment1 = equipment;
         GetRentalCost();
     }
 
-    private DateTime startDate = DateTime.Now;
+    private DateTime startDate1 = DateTime.Now;
 
     private DateTime returnDate = DateTime.Now.AddDays(1);
-    
+
     private DateTime currentDate = DateTime.Now;
-	
+
 
     private void GetRentalCost()
     {
-		rentalCost = Rental.CalculateRentalCost(SelectedEquipment.equipmentID, startDate, returnDate);
+        rentalCost = Rental.CalculateRentalCost(SelectedEquipment1.equipmentID, startDate1, returnDate);
     }
-	private void AddNewRental()
+    private void AddNewRental()
+    {
+        var random = new Random();
+        int rentalID = random.Next(1000, 9999); // Generate a random rental ID, this will not be the rental ID in the database.
+        Rental rental = new Rental(rentalID, currentDate, SelectedCustomer1.customerID, SelectedEquipment1.equipmentID, startDate1, returnDate);
+        Rental.AddRental(rental);
+        SelectedCustomer1 = null;
+        SelectedEquipment1 = null;
+    }
+
+    private List<Customer> rentalCustomers = Customer.GetCustomers();
+
+    private List<Equipment> rentedEquipment = Equipment.GetEquipment();
+
+    private List<Rental> rentals = Rental.GetRentals();
+
+    private int SelectedCustomer2 { get; set; }
+
+    private int SelectedEquipment2 { get; set; }
+
+    private int SelectedRentalID { get; set; }
+
+    private void GetRentalCustomers()
+    {
+		if (SelectedEquipment2 == 0)
+		{
+			rentalCustomers = Customer.GetCustomers();
+			return;
+		}
+		else
+		{
+            List<Customer> updatedRentalCustomers = new List<Customer>();
+            foreach (Rental rental in rentals)
+            {
+                if (rental.equipmentID == SelectedEquipment2)
+                {
+                    updatedRentalCustomers.Add(Customer.FindCustomerByID(rental.customerID));
+                }
+            }
+            rentalCustomers = updatedRentalCustomers;
+		}
+    }
+
+    private void GetRentedEquipment()
+    {
+        if (SelectedCustomer2 == 0)
+        {
+            rentedEquipment = Equipment.GetEquipment();
+            return;
+        }
+        else
+        {
+            List<Equipment> updatedRentedEquipment = new List<Equipment>();
+            foreach (Rental rental in rentals)
+            {
+                if (rental.customerID == SelectedCustomer2)
+                {
+                    updatedRentedEquipment.Add(Equipment.FindEquipmentByID(rental.equipmentID));
+                }
+            }
+            rentedEquipment = updatedRentedEquipment;
+        }
+        
+    }
+    private List<Rental> rentalSelection = Rental.GetRentals();
+    private void UpdateRentalSelection()
+    {
+		List<Rental> updatedRentals = new List<Rental>();
+        foreach (Rental rental in rentals)
+        {
+			if (rental.customerID == SelectedCustomer2 && rental.equipmentID == SelectedEquipment2)
+			{
+				updatedRentals.Add(rental);
+			}
+        }
+		rentalSelection = updatedRentals;
+    }
+    private void DeleteRental()
+    {
+        Rental rental = Rental.FindRental(SelectedRentalID);
+		if (rental != null)
+		{
+			Rental.DeleteRental(rental.rentalID);
+		}
+    }
+    private void OnSelectedCustomer2()
 	{
-		var random = new Random();
-		int rentalID = random.Next(1000, 9999); // Generate a random rental ID, this will not be the rental ID in the database.
-        Rental rental = new Rental(rentalID, currentDate, SelectedCustomer.customerID, SelectedEquipment.equipmentID, startDate, returnDate);
-		Rental.AddRental(rental);
-		SelectedCustomer = null;
-		SelectedEquipment = null;
+		GetRentedEquipment();
+		UpdateRentalSelection();
+	}
+	private void OnSelectedEquipment()
+	{
+		GetRentalCustomers();
+		UpdateRentalSelection();
+	}
+
+	private void OnSelectedRental()
+	{
+		SelectedCustomer2 = Rental.FindRental(SelectedRentalID).customerID;
+		SelectedEquipment2 = Rental.FindRental(SelectedRentalID).equipmentID;
 	}
 }

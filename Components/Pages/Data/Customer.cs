@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using MySqlConnector;
+using System.Reflection.PortableExecutable;
 
 namespace Final_Project.Components.Pages.Data
 {
@@ -72,7 +73,6 @@ namespace Final_Project.Components.Pages.Data
 
                         Customer customer = new Customer(customerID, firstName, lastName, phone, email);
                         customers.Add(customer);
-                        Console.WriteLine($"Added customer: {firstName} {lastName}");
                     }
 
                     connection.Close();
@@ -95,13 +95,60 @@ namespace Final_Project.Components.Pages.Data
                     string query = $"INSERT INTO customer (firstName, lastName, phone, email) VALUES ('{firstName}', '{lastName}', {phone}, '{email}')";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.ExecuteNonQuery();
-                    Console.WriteLine($"Customer {firstName} {lastName} added successfully.");
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
+        }
+
+        public static Customer FindCustomerByID(int customerID)
+        {
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = $"SELECT * FROM customer WHERE customerID = '{customerID}'";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            string firstName = reader.GetString(1);
+                            string lastName = reader.GetString(2);
+                            long? phone = null;
+                            if (!reader.IsDBNull(3))
+                            {
+                                try
+                                {
+                                    phone = reader.GetInt64(3); // Using GetInt64 for long type
+                                }
+                                catch
+                                {
+                                    Console.WriteLine($"Error parsing phone number for customer {customerID}");
+                                }
+                            }
+
+                            string email = reader.GetString(4);
+                            Customer customer = new Customer(customerID, firstName, lastName, phone, email);
+                            connection.Close();
+                            return customer;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+                return null;
+            }
+        }
+        public string CustomerToString()
+        {
+            return $"{customerID} {firstName} {lastName} {phone} {email}";
         }
     }
 }
