@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static Microsoft.Maui.ApplicationModel.Permissions;
 using MySqlConnector;
 
 namespace Final_Project.Components.Pages.Data
 {
     public class Equipment
     {
-        public int equipmentID { get; set; }
-        public int categoryID { get; set; }
-        public string categoryName { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public double dailyRentalCost { get; set; }
+        public int EquipmentID { get; set; }
+        public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double DailyRentalCost { get; set; }
+        public bool IsSelected { get; set; }
         public Equipment(int equipmentID, int categoryID, string categoryName, string name, string description, double dailyRentalCost)
         {
-            this.equipmentID = equipmentID;
-            this.categoryID = categoryID;
-            this.categoryName = categoryName;
-            this.name = name;
-            this.description = description;
-            this.dailyRentalCost = dailyRentalCost;
+            EquipmentID = equipmentID;
+            CategoryID = categoryID;
+            CategoryName = categoryName;
+            Name = name;
+            Description = description;
+            DailyRentalCost = dailyRentalCost;
         }
 
         public static MySqlConnectionStringBuilder builderString = new MySqlConnectionStringBuilder()
@@ -33,29 +31,31 @@ namespace Final_Project.Components.Pages.Data
             Password = "password",
             Database = "cpsy200_final"
         };
-        public static List<Equipment> GetEquipment()
+
+        public static async Task<List<Equipment>> GetEquipmentAsync()
         {
             List<Equipment> equipmentList = new List<Equipment>();
             using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
             {
                 try
                 {
-                    connection.Open();
-                    string query = $"SELECT * FROM equipment";
+                    await connection.OpenAsync();
+                    string query = "SELECT * FROM equipment";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        int equipmentID = reader.GetInt32(0);
-                        int categoryID = reader.GetInt32(1);
-                        string categoryName = reader.GetString(2);
-                        string name = reader.GetString(3);
-                        string description = reader.GetString(4);
-                        double dailyRentalCost = reader.GetDouble(5);
-                        Equipment equipment = new Equipment(equipmentID, categoryID, categoryName, name, description, dailyRentalCost);
-                        equipmentList.Add(equipment);
+                        while (await reader.ReadAsync())
+                        {
+                            equipmentList.Add(new Equipment(
+                                reader.GetInt32("EquipmentID"),
+                                reader.GetInt32("CategoryID"),
+                                reader.GetString("CategoryName"),
+                                reader.GetString("Name"),
+                                reader.GetString("Description"),
+                                reader.GetDouble("DailyRentalCost")
+                            ));
+                        }
                     }
-                    connection.Close();
                 }
                 catch (Exception ex)
                 {
@@ -64,22 +64,24 @@ namespace Final_Project.Components.Pages.Data
             }
             return equipmentList;
         }
-        public static void AddEquipment(Equipment equipment)
+
+        public static async Task AddEquipmentAsync(Equipment equipment)
         {
             using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
             {
                 try
                 {
-                    connection.Open();
-                    string query = $"INSERT INTO equipment (categoryID, categoryName, name, description, dailyRentalCost) VALUES (@categoryID, @categoryName, @name, @description, @dailyRentalCost)";
+                    await connection.OpenAsync();
+                    string query = @"INSERT INTO equipment 
+                                    (CategoryID, CategoryName, Name, Description, DailyRentalCost) 
+                                    VALUES (@CategoryID, @CategoryName, @Name, @Description, @DailyRentalCost)";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@categoryID", equipment.categoryID);
-                    cmd.Parameters.AddWithValue("@categoryName", equipment.categoryName);
-                    cmd.Parameters.AddWithValue("@name", equipment.name);
-                    cmd.Parameters.AddWithValue("@description", equipment.description);
-                    cmd.Parameters.AddWithValue("@dailyRentalCost", equipment.dailyRentalCost);
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
+                    cmd.Parameters.AddWithValue("@CategoryID", equipment.CategoryID);
+                    cmd.Parameters.AddWithValue("@CategoryName", equipment.CategoryName);
+                    cmd.Parameters.AddWithValue("@Name", equipment.Name);
+                    cmd.Parameters.AddWithValue("@Description", equipment.Description);
+                    cmd.Parameters.AddWithValue("@DailyRentalCost", equipment.DailyRentalCost);
+                    await cmd.ExecuteNonQueryAsync();
                 }
                 catch (Exception ex)
                 {
@@ -87,27 +89,30 @@ namespace Final_Project.Components.Pages.Data
                 }
             }
         }
-        public static Equipment FindEquipmentByID(int equipmentID)
+
+        public static async Task<Equipment> FindEquipmentByIDAsync(int equipmentID)
         {
             using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
             {
                 try
                 {
-                    connection.Open();
-                    string query = $"SELECT * FROM equipment WHERE equipmentID = '{equipmentID}'";
+                    await connection.OpenAsync();
+                    string query = "SELECT * FROM equipment WHERE EquipmentID = @EquipmentID";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    cmd.Parameters.AddWithValue("@EquipmentID", equipmentID);
+
+                    using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-                        if (reader.Read())
+                        if (await reader.ReadAsync())
                         {
-                            int categoryID = reader.GetInt32(1);
-                            string categoryName = reader.GetString(2);
-                            string name = reader.GetString(3);
-                            string description = reader.GetString(4);
-                            double dailyRentalCost = reader.GetDouble(5);
-                            connection.Close();
-                            Equipment equipment = new Equipment(equipmentID, categoryID, categoryName, name, description, dailyRentalCost);
-                            return equipment;
+                            return new Equipment(
+                                equipmentID,
+                                reader.GetInt32("CategoryID"),
+                                reader.GetString("CategoryName"),
+                                reader.GetString("Name"),
+                                reader.GetString("Description"),
+                                reader.GetDouble("DailyRentalCost")
+                            );
                         }
                     }
                 }
@@ -116,6 +121,55 @@ namespace Final_Project.Components.Pages.Data
                     Console.WriteLine($"Error: {ex.Message}");
                 }
                 return null;
+            }
+        }
+
+        public static async Task UpdateEquipmentAsync(Equipment equipment)
+        {
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    string query = @"UPDATE equipment SET 
+                                    CategoryID = @CategoryID, 
+                                    CategoryName = @CategoryName, 
+                                    Name = @Name, 
+                                    Description = @Description, 
+                                    DailyRentalCost = @DailyRentalCost 
+                                    WHERE EquipmentID = @EquipmentID";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@EquipmentID", equipment.EquipmentID);
+                    cmd.Parameters.AddWithValue("@CategoryID", equipment.CategoryID);
+                    cmd.Parameters.AddWithValue("@CategoryName", equipment.CategoryName);
+                    cmd.Parameters.AddWithValue("@Name", equipment.Name);
+                    cmd.Parameters.AddWithValue("@Description", equipment.Description);
+                    cmd.Parameters.AddWithValue("@DailyRentalCost", equipment.DailyRentalCost);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static async Task DeleteEquipmentAsync(int equipmentID)
+        {
+            using (MySqlConnection connection = new MySqlConnection(builderString.ConnectionString))
+            {
+                try
+                {
+                    await connection.OpenAsync();
+                    string query = "DELETE FROM equipment WHERE EquipmentID = @EquipmentID";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@EquipmentID", equipmentID);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
             }
         }
     }
