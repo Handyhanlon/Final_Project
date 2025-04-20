@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\data\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\data\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\rentals.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\rentals.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\data\\rental.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\data\\rental.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\data\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|solutionrelative:components\\pages\\data\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E261409F-6B2E-475C-8E5E-197037B9D3E4}|Final_Project.csproj|c:\\users\\chris\\onedrive\\documents\\github\\final-project\\final_project\\components\\pages\\equipments.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -42,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,13 +70,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Rentals.razor",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Rentals.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\Rentals.razor",
               "ToolTip": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Rentals.razor",
               "RelativeToolTip": "Components\\Pages\\Rentals.razor",
-              "ViewState": "AgIAAJ4AAAAAAAAAAAAqwCQBAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAqwCQBAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-17T17:27:40.748Z",
               "EditorCaption": ""
@@ -103,25 +103,24 @@
               "RelativeToolTip": "Components\\Pages\\Equipments.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-17T17:50:28.528Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T17:50:28.528Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Customer.cs",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Customer.cs",
               "RelativeDocumentMoniker": "Components\\Pages\\Data\\Customer.cs",
               "ToolTip": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Customer.cs",
               "RelativeToolTip": "Components\\Pages\\Data\\Customer.cs",
-              "ViewState": "AgIAAIIAAAAAAAAAAAAowHoAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAqwCIAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-17T18:52:15.133Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Rental.cs",
               "DocumentMoniker": "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\Final-Project\\Final_Project\\Components\\Pages\\Data\\Rental.cs",
               "RelativeDocumentMoniker": "Components\\Pages\\Data\\Rental.cs",
@@ -129,8 +128,7 @@
               "RelativeToolTip": "Components\\Pages\\Data\\Rental.cs",
               "ViewState": "AgIAAHcAAAAAAAAAAAAqwKYAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:50:05.003Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T17:50:05.003Z"
             },
             {
               "$type": "Document",
@@ -142,8 +140,7 @@
               "RelativeToolTip": "Components\\Pages\\Data\\Equipment.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAgwHIAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:49:34.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T17:49:34.205Z"
             },
             {
               "$type": "Document",
